@@ -1,0 +1,21 @@
+objects: #오브젝트들을 정의합니다
+  - id: a #식별자
+    name: Dotori #이름 
+    conversation: conv_a #클릭 시 실행할 대화
+    image: Dotori.jpeg # 이미지 파일
+  - id: b
+    name: Robin Hood
+    conversation: conv_b
+    image: Robin.webp
+conversation: #클릭 시 실행할 대화 정의
+    - id: conv_a #식별자
+      talks:
+        - id: a 
+          say: Hello, Robin! #a가 Hello, Robin! 이라고 말합니다
+        - id: b
+          say: Fucking Dotori
+    - id: conv_b
+      talks:
+        - id: b
+          say: 멀보노~
+    
