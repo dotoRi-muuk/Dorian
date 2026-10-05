@@ -4,57 +4,52 @@ using UnityEngine;
 
 namespace Accoutrement.Manifesto
 {
+    /*
+     * 문서 내에서의 언급 정리
+     * ### Event : Click on Object
+     *
+     * 버튼을 누르면 해당 Character은 InkyIntegrator을 호출.
+     *
+     * InkyIntegrator은 해당 버튼의 ID를 가진 Stitch로 커서를 이동. 읽을 수 있는 만큼 읽은 후 TextManager에 전달.
+     *
+     * ### Event : Click on Next Day Button
+     *
+     * 해당 NextDayButton은 InkyIntegrator을 호출.
+     *
+     * InkyIntegrator은 해당 버튼의 ID를 가진 Stitch로 커서를 이동. 읽을 수 있는 만큼 읽습니다.
+     *
+     * Next Day Button의 Stitch는 특별해서, 태그가 들어갈 수 있습니다. 태그를 읽으면 SceneManager에 전달합니다.
+     */
     public class InkyIntegrator : MonoBehaviour
     {
-        private static InkyIntegrator _instance;
-
-        public static InkyIntegrator Instance => _instance;
-
-        [Header("Singleton Settings")]
-        [SerializeField] private bool dontDestroyOnLoad = true;
-
-        [SerializeField] private TextAsset message;
-        [SerializeField] private TextManager textManager;
+        [SerializeField] private TextAsset ink;
+        
         private Story _story;
         private String _currentKnot;
+        private ProsceniumManager _prosceniumManager;
+        public event Action<string> OnRead;
+        public event Action<string> OnTag;
 
-        private void OnEnable()
+        public void Initialize(ProsceniumManager prosceniumManager)
         {
-            _story = new Story(message.text);
+            _story = new Story(ink.text);
+            if (!_story) throw new NullReferenceException("Story not initialized");
+            _prosceniumManager = prosceniumManager;
         }
 
-        private void Awake()
+        public void StartReading(string stitchID)
         {
-            if (_instance == null)
-            {
-                _instance = this;
-
-                if (dontDestroyOnLoad)
-                {
-                    // 최상위 루트 오브젝트여야 DontDestroyOnLoad가 정상 작동
-                    transform.SetParent(null);
-                    DontDestroyOnLoad(gameObject);
-                }
-            }
-            else if (_instance != this)
-            {
-                // 중복 생성된 오브젝트는 즉시 제거
-                Destroy(gameObject);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            // 자신이 해제될 때 정적 참조도 함께 정리
-            if (_instance == this)
-            {
-                _instance = null;
-            }
-        }
-
-        public void Jump(String id)
-        {
+            var fullPath = $"{_prosceniumManager._currentScene.getSceneID}.{stitchID}";
+            _story.ChoosePathString(fullPath);
             
+            while (_story.canContinue)
+            {
+                var message = _story.Continue();
+                OnRead?.Invoke(message);
+                var storyCurrentTags = _story.currentTags;
+                foreach (var storyCurrentTag in storyCurrentTags) OnTag?.Invoke(storyCurrentTag);
+                
+            }
         }
     }
 }

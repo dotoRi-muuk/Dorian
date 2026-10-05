@@ -12,11 +12,11 @@ namespace Accoutrement.Manifesto
     public class InputManager: MonoBehaviour
     {
         private DorInputSystem _dorInputSystem;
-
-        private void OnEnable()
+        public event Action OnClick;
+        public void Initialize()
         {
             _dorInputSystem = new DorInputSystem();
-            _dorInputSystem
+            _dorInputSystem.RianRianA.Next.performed += _ => OnClick?.Invoke();
         }
     }
 }
