@@ -74,7 +74,7 @@ namespace Accoutrement.Manifesto
     /// }
     /// </code>
     /// </example>
-    public partial class @InputSystem: IInputActionCollection2, IDisposable
+    public partial class @DorInputSystem: IInputActionCollection2, IDisposable
     {
         /// <summary>
         /// Provides access to the underlying asset instance.
@@ -84,7 +84,7 @@ namespace Accoutrement.Manifesto
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
-        public @InputSystem()
+        public @DorInputSystem()
         {
             asset = InputActionAsset.FromJson(@"{
     ""version"": 1,
@@ -94,15 +94,6 @@ namespace Accoutrement.Manifesto
             ""name"": ""RianRianA"",
             ""id"": ""0682364a-79bb-4b69-b5a2-69ee9cc8212e"",
             ""actions"": [
-                {
-                    ""name"": ""Interact"",
-                    ""type"": ""Button"",
-                    ""id"": ""4e25704e-73c3-41dc-9925-541b0facb35c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
                 {
                     ""name"": ""Next"",
                     ""type"": ""Button"",
@@ -114,17 +105,6 @@ namespace Accoutrement.Manifesto
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""5b3096b9-feb7-4a17-b6e1-37a6a060d878"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""efd224cd-da74-4055-b4ce-9f7607a71a2c"",
@@ -215,13 +195,12 @@ namespace Accoutrement.Manifesto
 }");
             // RianRianA
             m_RianRianA = asset.FindActionMap("RianRianA", throwIfNotFound: true);
-            m_RianRianA_Interact = m_RianRianA.FindAction("Interact", throwIfNotFound: true);
             m_RianRianA_Next = m_RianRianA.FindAction("Next", throwIfNotFound: true);
         }
 
-        ~@InputSystem()
+        ~@DorInputSystem()
         {
-            UnityEngine.Debug.Assert(!m_RianRianA.enabled, "This will cause a leak and performance issues, InputSystem.RianRianA.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_RianRianA.enabled, "This will cause a leak and performance issues, DorInputSystem.RianRianA.Disable() has not been called.");
         }
 
         /// <summary>
@@ -297,23 +276,18 @@ namespace Accoutrement.Manifesto
         // RianRianA
         private readonly InputActionMap m_RianRianA;
         private List<IRianRianAActions> m_RianRianAActionsCallbackInterfaces = new List<IRianRianAActions>();
-        private readonly InputAction m_RianRianA_Interact;
         private readonly InputAction m_RianRianA_Next;
         /// <summary>
         /// Provides access to input actions defined in input action map "RianRianA".
         /// </summary>
         public struct RianRianAActions
         {
-            private @InputSystem m_Wrapper;
+            private @DorInputSystem m_Wrapper;
 
             /// <summary>
             /// Construct a new instance of the input action map wrapper class.
             /// </summary>
-            public RianRianAActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
-            /// <summary>
-            /// Provides access to the underlying input action "RianRianA/Interact".
-            /// </summary>
-            public InputAction @Interact => m_Wrapper.m_RianRianA_Interact;
+            public RianRianAActions(@DorInputSystem wrapper) { m_Wrapper = wrapper; }
             /// <summary>
             /// Provides access to the underlying input action "RianRianA/Next".
             /// </summary>
@@ -344,9 +318,6 @@ namespace Accoutrement.Manifesto
             {
                 if (instance == null || m_Wrapper.m_RianRianAActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_RianRianAActionsCallbackInterfaces.Add(instance);
-                @Interact.started += instance.OnInteract;
-                @Interact.performed += instance.OnInteract;
-                @Interact.canceled += instance.OnInteract;
                 @Next.started += instance.OnNext;
                 @Next.performed += instance.OnNext;
                 @Next.canceled += instance.OnNext;
@@ -361,9 +332,6 @@ namespace Accoutrement.Manifesto
             /// <seealso cref="RianRianAActions" />
             private void UnregisterCallbacks(IRianRianAActions instance)
             {
-                @Interact.started -= instance.OnInteract;
-                @Interact.performed -= instance.OnInteract;
-                @Interact.canceled -= instance.OnInteract;
                 @Next.started -= instance.OnNext;
                 @Next.performed -= instance.OnNext;
                 @Next.canceled -= instance.OnNext;
@@ -472,13 +440,6 @@ namespace Accoutrement.Manifesto
         /// <seealso cref="RianRianAActions.RemoveCallbacks(IRianRianAActions)" />
         public interface IRianRianAActions
         {
-            /// <summary>
-            /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnInteract(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "Next" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>

@@ -7,15 +7,6 @@
             "id": "0682364a-79bb-4b69-b5a2-69ee9cc8212e",
             "actions": [
                 {
-                    "name": "Interact",
-                    "type": "Button",
-                    "id": "4e25704e-73c3-41dc-9925-541b0facb35c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Next",
                     "type": "Button",
                     "id": "746d2d67-90f1-4cd2-b085-9dc9991da615",
@@ -26,17 +17,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "5b3096b9-feb7-4a17-b6e1-37a6a060d878",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "efd224cd-da74-4055-b4ce-9f7607a71a2c",
